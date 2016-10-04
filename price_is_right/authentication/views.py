@@ -3,10 +3,14 @@ from forms import UserForm, UserProfileForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render
 from django.contrib.auth import authenticate, login
+from models import ParentOrder
 
 
 def index(request):
-    return HttpResponse("SUCCESSFULLY LOGGED IN")
+    order_list = ParentOrder.objects.all()
+    context_dict = {'orders': order_list}
+
+    return render(request, 'order.html', context_dict)
 
 
 def register(request):
@@ -96,4 +100,10 @@ def user_login(request):
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
         return render(request, "login.html", {})
+
+def display_order(request):
+    context = RequestContext(request)
+
+    if request.method == 'GET':
+        return render(request, "order.html", {})
 
