@@ -12,13 +12,19 @@ class UserProfile(models.Model):
 
 
 class ParentOrder(models.Model):
-    user = models.ForeignKey(UserProfile)
     quantity = models.IntegerField(blank=False, help_text="Total quantity of parent order")
     stock_type = models.CharField(blank=True, max_length=10)
     stock_name = models.CharField(blank=True, max_length=10)
     is_sell = models.BooleanField(blank=False, default=True)
     time_executed = models.DateTimeField(blank=False, auto_now_add=True)
     success = models.BooleanField(default=False)
+
+    def valid_order(self):  # method to check if quantity is positive
+        if self.quantity < 0:
+            return False
+        else:
+            return True
+
 
 
 class ChildOrder(models.Model):

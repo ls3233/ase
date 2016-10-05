@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from forms import UserForm, UserProfileForm
+from forms import UserForm, UserProfileForm, ParentOrderForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render
 from django.contrib.auth import authenticate, login
@@ -101,9 +101,23 @@ def user_login(request):
         # blank dictionary object...
         return render(request, "login.html", {})
 
-def display_order(request):
+
+def place_order(request):
     context = RequestContext(request)
 
-    if request.method == 'GET':
-        return render(request, "order.html", {})
+    if request.method == 'POST':
+        order_form = ParentOrderForm(data=request.POST)
+
+        if order_form.is_valid():
+            order = order_form.save()
+            order.save()
+            return HttpResponseRedirect('/authentication')
+
+        else:
+            print order_form.errors
+
+    else:
+        order_form = ParentOrderForm()
+        return render(request, "place_order.html", {'order_form': order_form})
+
 
