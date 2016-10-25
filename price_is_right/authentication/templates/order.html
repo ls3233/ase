@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Orders</title>
+    </head>
+
+    <body>
+        <h1>These are all orders being worked on</h1>
+
+        {% if orders %}
+            <ul>
+                {% for order in orders %}
+                <li>ID = {{ order.id }} Sell = {{ order.is_sell }} for this quantity: {{ order.quantity }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="/authentication/place_order/">Place an Order</a>
+    </body>
+</html>
